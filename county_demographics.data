@@ -1,1 +1,7 @@
-
+display
+filter-state: California
+filter-gt: Income 50000
+filter-lt: Education 50
+population-total
+population: Income
+percent: Ethnicities
