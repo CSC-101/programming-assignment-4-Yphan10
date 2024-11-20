@@ -39,35 +39,42 @@ def display(counties: List[data.CountyDemographics]):
         print(f"{county.county}, {county.state}: {county.population['2014 Population']} people")
 
 def filter_state(counties: List[data.CountyDemographics], state: str) -> List[data.CountyDemographics]:
+    #Filters the list of counties by state and returns the filtered list.
     filtered = [c for c in counties if c.state == state]
     print(f"Filter: state == {state} ({len(filtered)} entries)")
     return filtered
 
 def filter_gt(counties: List[data.CountyDemographics], field: str, threshold: float) -> List[data.CountyDemographics]:
+    #Filters counties where the specified field's value is greater than the threshold.
     filtered = [c for c in counties if field_in_county(c, field) > threshold]
     print(f"Filter: {field} gt {threshold} ({len(filtered)} entries)")
     return filtered
 
 def filter_lt(counties: List[data.CountyDemographics], field: str, threshold: float) -> List[data.CountyDemographics]:
+    #Filters counties where the specified field's value is less than the threshold.
     filtered = [c for c in counties if field_in_county(c, field) < threshold]
     print(f"Filter: {field} lt {threshold} ({len(filtered)} entries)")
     return filtered
 
 def population_total(counties: List[data.CountyDemographics]):
+    #Computes and displays the total 2014 population for all counties.
     total = sum(c.population['2014 Population'] for c in counties)
     print(f"2014 population: {total}")
 
 def population_field(counties: List[data.CountyDemographics], field: str):
+    #Computes and displays the total population for a specified field.
     total = sum(c.population['2014 Population'] * (field_in_county(c, field) / 100) for c in counties)
     print(f"2014 {field} population: {total}")
 
 def percent_field(counties: List[data.CountyDemographics], field: str):
+    #Computes and displays the percentage of the population for a specified field.
     total_population = sum(c.population['2014 Population'] for c in counties)
     sub_population = sum(c.population['2014 Population'] * (field_in_county(c, field) / 100) for c in counties)
     percentage = (sub_population / total_population) * 100
     print(f"2014 {field} percentage: {percentage}")
 
 def field_in_county(county: data.CountyDemographics, field: str) -> float:
+    #Navigates a CountyDemographics object to retrieve the value of a nested field.
     sections = field.split('.')
     data = county
     for section in sections:
